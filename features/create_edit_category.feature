@@ -23,7 +23,7 @@ Feature: Create and edit category
     And I should see "ABC" within category_container
     And I should see "Foobar in Icelake." within category_container
 
-  Scenario: Create a new category
+  Scenario: Edit a category
     When I follow "Edit"
     And I fill in "category name" with "aaa"
     And I fill in the following:
