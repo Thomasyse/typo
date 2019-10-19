@@ -31,6 +31,12 @@ module WithinHelpers
 end
 World(WithinHelpers)
 
+Given /the following categories exist/ do |categories_table|
+  categories_table.hashes.each do |category|
+    Category.create category
+  end
+end
+
 Given /^the blog is set up$/ do
   Blog.default.update_attributes!({:blog_name => 'Teh Blag',
                                    :base_url => 'http://localhost:3000'});
@@ -63,6 +69,11 @@ end
 # Multi-line step scoper
 When /^(.*) within (.*[^:]):$/ do |step, parent, table_or_string|
   with_scope(parent) { When "#{step}:", table_or_string }
+end
+
+# Multi-line step scoper
+When /^(.*) at (.*[^:]):$/ do |step, parent, table_or_string|
+  within(parent) { When "#{step}:", table_or_string }
 end
 
 Given /^(?:|I )am on (.+)$/ do |page_name|
@@ -100,7 +111,7 @@ end
 # TODO: Add support for checkbox, select or option
 # based on naming conventions.
 #
-When /^(?:|I )fill in the following:$/ do |fields|
+When /^(?:|I )fill in the following:?$/ do |fields|
   fields.rows_hash.each do |name, value|
     When %{I fill in "#{name}" with "#{value}"}
   end
